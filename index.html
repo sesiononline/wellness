@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wellness Diario</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("fondo.png"); /* coloca tu imagen "fe grama" aquí */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    .rating-group {
+      margin-bottom: 15px;
+    }
+
+    .rating-group div {
+      margin-top: 5px;
+    }
+
+    input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    input[type="text"], input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #00b894;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #019875;
+    }
+
+    .success {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Wellness Diario</h1>
+    <form id="wellnessForm">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required />
+
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" name="fecha" required />
+
+      <div class="rating-group">
+        <label>Sueño:</label>
+        <div>
+          <input type="radio" name="sueño" value="1" required />1
+          <input type="radio" name="sueño" value="2" />2
+          <input type="radio" name="sueño" value="3" />3
+          <input type="radio" name="sueño" value="4" />4
+          <input type="radio" name="sueño" value="5" />5
+        </div>
+      </div>
+
+      <div class="rating-group">
+        <label>Fatiga:</label>
+        <div>
+          <input type="radio" name="fatiga" value="1" required />1
+          <input type="radio" name="fatiga" value="2" />2
+          <input type="radio" name="fatiga" value="3" />3
+          <input type="radio" name="fatiga" value="4" />4
+          <input type="radio" name="fatiga" value="5" />5
+        </div>
+      </div>
+
+      <div class="rating-group">
+        <label>Dolor muscular:</label>
+        <div>
+          <input type="radio" name="dolor" value="1" required />1
+          <input type="radio" name="dolor" value="2" />2
+          <input type="radio" name="dolor" value="3" />3
+          <input type="radio" name="dolor" value="4" />4
+          <input type="radio" name="dolor" value="5" />5
+        </div>
+      </div>
+
+      <div class="rating-group">
+        <label>Alimentación:</label>
+        <div>
+          <input type="radio" name="alimentacion" value="1" required />1
+          <input type="radio" name="alimentacion" value="2" />2
+          <input type="radio" name="alimentacion" value="3" />3
+          <input type="radio" name="alimentacion" value="4" />4
+          <input type="radio" name="alimentacion" value="5" />5
+        </div>
+      </div>
+
+      <div class="rating-group">
+        <label>Ánimo:</label>
+        <div>
+          <input type="radio" name="animo" value="1" required />1
+          <input type="radio" name="animo" value="2" />2
+          <input type="radio" name="animo" value="3" />3
+          <input type="radio" name="animo" value="4" />4
+          <input type="radio" name="animo" value="5" />5
+        </div>
+      </div>
+
+      <button type="submit">Enviar</button>
+      <div class="success" id="successMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("wellnessForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const data = {
+        nombre: form.nombre.value,
+        fecha: form.fecha.value,
+        sueño: form.sueño.value,
+        fatiga: form.fatiga.value,
+        dolor: form.dolor.value,
+        alimentacion: form.alimentacion.value,
+        animo: form.animo.value
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbx1oZQG_o4VJ0OAJp86MZua45vuvY7zkNw-oW4sx_NWYWHy4OcbKwbdwVqFVObfoyZqnw/exec", {
+        method: "POST",
+        body: new URLSearchParams({ data: JSON.stringify(data) }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          document.getElementById("successMsg").innerText = "✅ Enviado correctamente. ¡Gracias!";
+          form.reset();
+        })
+        .catch((err) => {
+          document.getElementById("successMsg").innerText = "❌ Error al enviar. Intenta de nuevo.";
+        });
+    });
+  </script>
+</body>
+</html>
