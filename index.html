@@ -7,47 +7,65 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-image: url("FC Grama.png"); /* coloca tu imagen "fe grama" aquí */
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      padding: 20px;
-      color: #fff;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .background {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .background img {
+      width: 180px;
+      opacity: 0.2;
     }
 
     .form-container {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
+      background-color: #ffffff;
+      padding: 25px;
       border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: -30px;
     }
 
     h1 {
       text-align: center;
+      margin-bottom: 10px;
+      color: #333;
     }
 
     label {
       font-weight: bold;
+      color: #444;
     }
 
     .rating-group {
-      margin-bottom: 15px;
+      margin-bottom: 25px;
     }
 
-    .rating-group div {
-      margin-top: 5px;
+    .rating-group p {
+      font-size: 14px;
+      margin: 5px 0 10px;
+      color: #555;
+    }
+
+    .rating-options {
+      margin-top: 8px;
     }
 
     input[type="radio"] {
       margin-right: 5px;
     }
 
-    input[type="text"], input[type="date"] {
+    input[type="text"] {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      border: none;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
       border-radius: 5px;
     }
 
@@ -70,22 +88,30 @@
       text-align: center;
       margin-top: 15px;
       font-weight: bold;
+      color: green;
     }
   </style>
 </head>
 <body>
+  <div class="background">
+    <img src="FC Grama.png" alt="Fe Grama" />
+  </div>
+
   <div class="form-container">
     <h1>Wellness Diario</h1>
     <form id="wellnessForm">
-      <label for="nombre">Nombre:</label>
+      <label for="nombre">Nombre Apellido:</label>
       <input type="text" id="nombre" name="nombre" required />
-
-      <label for="fecha">Fecha:</label>
-      <input type="date" id="fecha" name="fecha" required />
 
       <div class="rating-group">
         <label>Sueño:</label>
-        <div>
+        <p>¿Cuántas horas dormiste y cómo fue la calidad del sueño?<br>
+        1 = Menos de 4h / muy mal<br>
+        2 = 4–5h / mal<br>
+        3 = 6h / regular<br>
+        4 = 7h / bien<br>
+        5 = 8h o más / excelente</p>
+        <div class="rating-options">
           <input type="radio" name="sueño" value="1" required />1
           <input type="radio" name="sueño" value="2" />2
           <input type="radio" name="sueño" value="3" />3
@@ -95,8 +121,14 @@
       </div>
 
       <div class="rating-group">
-        <label>Fatiga:</label>
-        <div>
+        <label>Fatiga general:</label>
+        <p>¿Te sientes físicamente cansado o con falta de energía?<br>
+        1 = Extremadamente fatigado<br>
+        2 = Muy cansado<br>
+        3 = Cansado<br>
+        4 = Algo cansado<br>
+        5 = Muy descansado</p>
+        <div class="rating-options">
           <input type="radio" name="fatiga" value="1" required />1
           <input type="radio" name="fatiga" value="2" />2
           <input type="radio" name="fatiga" value="3" />3
@@ -106,8 +138,14 @@
       </div>
 
       <div class="rating-group">
-        <label>Dolor muscular:</label>
-        <div>
+        <label>Dolor muscular (DOMS):</label>
+        <p>¿Tienes dolor o rigidez muscular? (Después de entrenar o partidos)<br>
+        1 = Dolor severo<br>
+        2 = Dolor notable<br>
+        3 = Dolor moderado<br>
+        4 = Ligera molestia<br>
+        5 = Sin dolor</p>
+        <div class="rating-options">
           <input type="radio" name="dolor" value="1" required />1
           <input type="radio" name="dolor" value="2" />2
           <input type="radio" name="dolor" value="3" />3
@@ -118,7 +156,13 @@
 
       <div class="rating-group">
         <label>Alimentación:</label>
-        <div>
+        <p>¿Cómo fue tu alimentación en las últimas 24 horas?<br>
+        1 = Muy mala (salté comidas, comida chatarra)<br>
+        2 = Mala<br>
+        3 = Regular<br>
+        4 = Buena<br>
+        5 = Muy buena (variada, equilibrada)</p>
+        <div class="rating-options">
           <input type="radio" name="alimentacion" value="1" required />1
           <input type="radio" name="alimentacion" value="2" />2
           <input type="radio" name="alimentacion" value="3" />3
@@ -128,8 +172,14 @@
       </div>
 
       <div class="rating-group">
-        <label>Ánimo:</label>
-        <div>
+        <label>Ánimo / Estado mental:</label>
+        <p>¿Cómo es tu estado de ánimo general hoy?<br>
+        1 = Muy negativo<br>
+        2 = Negativo<br>
+        3 = Neutro<br>
+        4 = Positivo<br>
+        5 = Muy positivo</p>
+        <div class="rating-options">
           <input type="radio" name="animo" value="1" required />1
           <input type="radio" name="animo" value="2" />2
           <input type="radio" name="animo" value="3" />3
@@ -148,9 +198,12 @@
       e.preventDefault();
 
       const form = e.target;
+      const today = new Date();
+      const fecha = today.toISOString().split("T")[0];
+
       const data = {
-        nombre: form.nombre.value,
-        fecha: form.fecha.value,
+        nombre: form.nombre.value.trim(),
+        fecha: fecha,
         sueño: form.sueño.value,
         fatiga: form.fatiga.value,
         dolor: form.dolor.value,
