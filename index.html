@@ -196,36 +196,50 @@
   </div>
 
   <script>
-    document.getElementById("wellnessForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+  document.getElementById("wellnessForm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      const form = e.target;
-      const today = new Date();
-      const fecha = today.toISOString().split("T")[0];
+    const form = e.target;
+    const submitBtn = form.querySelector("button");
+    const successMsg = document.getElementById("successMsg");
 
-      const data = {
-        nombre: form.nombre.value.trim(),
-        fecha: fecha,
-        sueño: form.sueño.value,
-        fatiga: form.fatiga.value,
-        dolor: form.dolor.value,
-        alimentacion: form.alimentacion.value,
-        animo: form.animo.value
-      };
+    const today = new Date();
+    const fecha = today.toISOString().split("T")[0];
 
-      fetch("https://script.google.com/macros/s/AKfycbx1oZQG_o4VJ0OAJp86MZua45vuvY7zkNw-oW4sx_NWYWHy4OcbKwbdwVqFVObfoyZqnw/exec", {
-        method: "POST",
-        body: new URLSearchParams({ data: JSON.stringify(data) }),
+    const data = {
+      nombre: form.nombre.value.trim(),
+      fecha: fecha,
+      sueño: form.sueño.value,
+      fatiga: form.fatiga.value,
+      dolor: form.dolor.value,
+      alimentacion: form.alimentacion.value,
+      animo: form.animo.value
+    };
+
+    submitBtn.innerText = "Enviando... no te vayas porfa 🙏";
+    submitBtn.disabled = true;
+    submitBtn.style.backgroundColor = "#888"; // 灰色发送中
+
+    fetch("https://script.google.com/macros/s/AKfycbx1oZQG_o4VJ0OAJp86MZua45vuvY7zkNw-oW4sx_NWYWHy4OcbKwbdwVqFVObfoyZqnw/exec", {
+      method: "POST",
+      body: new URLSearchParams({ data: JSON.stringify(data) }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        successMsg.innerText = "✅ Enviado correctamente. ¡Gracias!";
+        form.reset();
+        submitBtn.innerText = "Enviado ✅";
+        submitBtn.style.backgroundColor = "#ccc"; // 成功后变浅灰色
+        submitBtn.style.cursor = "not-allowed";
       })
-        .then((res) => res.json())
-        .then((res) => {
-          document.getElementById("successMsg").innerText = "✅ Enviado correctamente. ¡Gracias!";
-          form.reset();
-        })
-        .catch((err) => {
-          document.getElementById("successMsg").innerText = "❌ Error al enviar. Intenta de nuevo.";
-        });
-    });
-  </script>
+      .catch((err) => {
+        successMsg.innerText = "❌ Error al enviar. Intenta de nuevo.";
+        submitBtn.innerText = "Enviar";
+        submitBtn.disabled = false;
+        submitBtn.style.backgroundColor = "#00b894"; // 失败后恢复原色
+        submitBtn.style.cursor = "pointer";
+      });
+  });
+</script>
 </body>
 </html>
